@@ -1,6 +1,11 @@
 var EulerCoin = artifacts.require("../contracts/EulerCoin.sol");
 
-var account1 = "0x39da481c197790ccc9ebfe2425165a8433de62f1";
+// Chuyi
+//var account1 = "0x39da481c197790ccc9ebfe2425165a8433de62f1";
+
+// Bai
+var account1 = "0xfe77b7f639a5a2cd8fc20c1e5431fc0d52295e3d";
+
 //var account2 = "0x0000000000000000000000000000000000000002";
 
 module.exports = function(callback) {
@@ -19,16 +24,6 @@ module.exports = function(callback) {
       eulerCoin.getBalance(account1).then(function(res){
           console.log(res);
       });
-    /*
-    eulerCoin.submitAnswer.call(
-      account1, {
-        problemNumber: 1,
-        answer: 5522,
-      }).then(function(rval) {
-        console.log('In callback');
-        console.log(rval);
-      });
-    */
   });
 
   console.log('Done!');
