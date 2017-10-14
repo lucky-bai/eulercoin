@@ -10,12 +10,15 @@ contract EulerCoin {
   }
 
   /* Submit answer to generate EulerCoin */
-  function submitAnswer(uint256 problemNumber, uint256 answerValue) public {
+  function submitAnswer(uint256 problemNumber, uint256 answerValue) public returns(uint) {
     // Todo: check if the answer is correct
 
     // Todo: award based on how many solvers already
     // For now, award 100 EulerCoins
     balanceOf[msg.sender] += 100;
+
+    // Debug
+    return 42;
   }
 
   /* Send coins */
