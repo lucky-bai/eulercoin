@@ -4,7 +4,7 @@ var EulerCoin = artifacts.require("../contracts/EulerCoin.sol");
 //var account1 = "0x39da481c197790ccc9ebfe2425165a8433de62f1";
 
 // Bai
-var account1 = "0xa97b6ee76f383f60ad77c97d42b6e33af2918ee7";
+var account1 = "0x27917aaef3a9a06a6aae290a260a4a8a2c713799";
 
 //var account2 = "0x0000000000000000000000000000000000000002";
 

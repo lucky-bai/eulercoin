@@ -44,15 +44,20 @@ contract EulerCoin {
   function submitAnswer(uint problemNumber, uint256 answerValue) public{
       require(problemNumber >= 1);
       require(problemNumber <= numProblems);
-      require(allAnswers[problemNumber] == 0);
+
+      // Require that we don't already know the answer
+      if(allAnswers[problemNumber] != 0) {
+        return;
+      }
 
       if(checkAnswer(problemNumber, answerValue)){
-          if (solvers[problemNumber] <= threshold){
-              balanceOf[msg.sender] += MAX_REWARD;
-          }else{
-              balanceOf[msg.sender] += uint(MAX_REWARD*threshold/solvers[problemNumber]);
-          }
-          allAnswers[problemNumber] = answerValue;
+        // Correct answer: award tokens and record answer
+        if (solvers[problemNumber] <= threshold){
+          balanceOf[msg.sender] += MAX_REWARD;
+        }else{
+          balanceOf[msg.sender] += uint(MAX_REWARD*threshold/solvers[problemNumber]);
+        }
+        allAnswers[problemNumber] = answerValue;
       }
   }
 
