@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.15;
 
 /* Mine EulerCoin by submitting answers to Project Euler problems! */
 contract EulerCoin {
