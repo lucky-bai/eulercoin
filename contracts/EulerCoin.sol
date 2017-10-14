@@ -41,7 +41,7 @@ contract EulerCoin {
   }
 
   /* Submit answer to generate EulerCoin */
-  function submitAnswer(uint256 problemNumber, uint256 answerValue) public{
+  function submitAnswer(uint problemNumber, uint256 answerValue) public{
       require(problemNumber >= 1);
       require(problemNumber <= numProblems);
       require(allAnswers[problemNumber] == 0);
@@ -52,6 +52,7 @@ contract EulerCoin {
           }else{
               balanceOf[msg.sender] += uint(MAX_REWARD*threshold/solvers[problemNumber]);
           }
+          allAnswers[problemNumber] = answerValue;
       }
   }
 
