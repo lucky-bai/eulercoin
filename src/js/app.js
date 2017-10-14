@@ -47,6 +47,14 @@ App = {
 
       // Use our contract to retrieve and mark the adopted pets
       return App.markAdopted();
+
+    });
+    $.getJSON('EulerCoin.json', function(data){
+      App.contracts.EulerCoin = TruffleContract(data);
+
+      // Set the provider for our contract
+      App.contracts.EulerCoin.setProvider(App.web3Provider);
+      console.log("been here");
     });
 
     return App.bindEvents();
@@ -54,6 +62,7 @@ App = {
 
   bindEvents: function() {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
+    $(document).on('click','.btn-submit',App.handleSubmit);
   },
 
   markAdopted: function(adopters, account) {
@@ -98,6 +107,12 @@ App = {
         console.log(err.message);
       });
     });
+  },
+
+  handleSubmit: function(){
+    console.log("did submit");
+    var answer = window.prompt("your answer");
+    console.log( answer);
   }
 
 };
