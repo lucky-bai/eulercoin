@@ -4,7 +4,7 @@ pragma solidity ^0.4.15;
 contract EulerCoin {
   /* This creates an array with all balances */
   mapping (address => uint256) public balanceOf;
-  mapping (uint => str) public allAnswers;
+  mapping (uint => string) public allAnswers;
   mapping (uint256 => uint256) public mockAnswers;
   mapping (uint256 => uint256) public Solvers;
   uint threshold;
@@ -51,10 +51,9 @@ contract EulerCoin {
   function getBalance(address _from) constant returns (uint){
       return balanceOf[_from];
   }
-}
 
-  /* return all existing answers */
-  function getAnswers() public returns(str) {
-    return allAnswers;
+  /* return existing answer */
+  function getAnswer(uint problemId) public returns(string) {
+    return allAnswers[problemId];
   }
 }
