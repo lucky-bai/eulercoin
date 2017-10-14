@@ -4,6 +4,7 @@ pragma solidity ^0.4.15;
 contract EulerCoin {
   /* This creates an array with all balances */
   mapping (address => uint256) public balanceOf;
+  mapping (uint => str) public allAnswers;
 
   /* Initially, nobody has any EulerCoins */
   function EulerCoin() public {
@@ -28,5 +29,9 @@ contract EulerCoin {
     balanceOf[msg.sender] -= _value;                    // Subtract from the sender
     balanceOf[_to] += _value;                           // Add the same to the recipient
   }
-}
 
+  /* return all existing answers */
+  function getAnswers() public returns(str) {
+    return allAnswers;
+  }
+}

@@ -55,13 +55,14 @@ App = {
       // Set the provider for our contract
       App.contracts.EulerCoin.setProvider(App.web3Provider);
       console.log("been here");
+      return App.displayResults();
     });
 
     return App.bindEvents();
   },
 
   bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
+    $(document).on('click','.btn-adopt', App.handleAdopt);
     $(document).on('click','.btn-submit',App.handleSubmit);
   },
 
@@ -83,22 +84,38 @@ App = {
     });
   },
 
+
+  /* display answers  not complete  */
+  displayResults:function(allAnswers) {
+    var EulerInstance;
+
+    App.contracts.Adoption.deployed().then(function(instance) {
+      EulerInstance = instance;
+
+      return EulerInstance.getAnswers.call();
+    }).then(function(allAnswers) {
+      for (i = 0; i < allAnswers.length; i++) {
+        /* haven't finish this part  */
+        if (allAnswers[i] !== '0x0000000000000000000000000000000000000000') {
+          $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
+        }
+      }
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  },
+
   handleAdopt: function() {
     event.preventDefault();
-
     var petId = parseInt($(event.target).data('id'));
     var adoptionInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
+    web3.eth.getAccounts(function(error, accounts){
       if (error) {
         console.log(error);
       }
-
       var account = accounts[0];
-
       App.contracts.Adoption.deployed().then(function(instance) {
         adoptionInstance = instance;
-
         // Execute adopt as a transaction by sending account
         return adoptionInstance.adopt(petId, {from: account});
       }).then(function(result) {
@@ -113,8 +130,21 @@ App = {
     console.log("did submit");
     var answer = window.prompt("your answer");
     console.log( answer);
-  }
 
+    web3.eth.getAccounts(function(error, accounts){
+      if (error) {
+        console.log(error);
+      }
+      var account = accounts[0];
+      App.contracts.EulerCoin.deployed().then(function(instance) {
+        EulerInstance = instance;
+        // Execute adopt as a transaction by sending account
+        return EulerInstance.SubmitAnswer(answer, {from: account});
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    });
+  }
 };
 
 $(function() {
