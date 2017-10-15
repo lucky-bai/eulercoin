@@ -9,6 +9,7 @@ App = {
     var petTemplate = $('#petTemplate');
 
     for (i = 1; i <= 20; i ++) {
+      petTemplate.find('.my-balance').text(2333);
       petTemplate.find('.problem-no').text(i);
       petTemplate.find('.problem-ans').text("not solved");
       petTemplate.find('.btn-submit').attr('ans-id', i)
@@ -46,6 +47,7 @@ App = {
 
     });
     $.getJSON('EulerCoin.json', function(data){
+
       App.contracts.EulerCoin = TruffleContract(data);
 
       // Set the provider for our contract
@@ -62,9 +64,27 @@ App = {
           })
         })(j);
       }
+      web3.eth.getAccounts(function(error, accounts){
+        if (error) {
+          console.log(error);
+        }
+        var account = accounts[0];
+        App.contracts.EulerCoin.deployed().then(function(instance) {
+          adoptionInstance = instance;
+          // Execute adopt as a transaction by sending account
+          return adoptionInstance.getBalance(account);
+        }).then(function(result) {
+          console.log(result);
+          $('.my-balance').text(result.toNumber());
+
+        }).catch(function(err) {
+          console.log(err.message);
+        });
+      });
       return App.displayResults();
 
     });
+
 
     return App.bindEvents();
   },
@@ -95,9 +115,6 @@ App = {
     for (i = 1; i <= 20; i++) {
       /* haven't finish this part  */
       if (App.map_answers[i]) {
-        console.log(i);
-        console.log(App.map_answers[i]);
-        console.log(App.map_answers);
         $('.panel-body').eq(i-1).find('button').text('solved!').attr('disabled', true);
         $('.problem-ans').eq(i-1).text(App.map_answers[i]);
       }
@@ -140,6 +157,8 @@ App = {
         EulerInstance = instance;
         // Execute adopt as a transaction by sending account
         return EulerInstance.submitAnswer(petId, answer, {from: account});
+      }).then(function(){
+        location.reload();
       }).catch(function(err) {
         console.log(err.message);
       });
