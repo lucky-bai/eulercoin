@@ -8,7 +8,6 @@ contract EulerCoin {
   // Answers that we know (and have been submitted)
   uint numProblems = 20;
   mapping (uint => uint256) public allAnswers;
-
   mapping (uint256 => uint256) public solvers;
 
   // Constants used to determine reward payout

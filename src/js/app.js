@@ -1,24 +1,20 @@
 App = {
   web3Provider: null,
   contracts: {},
+  map_answers:{},
 
   init: function() {
     // Load pets.
-    $.getJSON('../pets.json', function(data) {
-      var petsRow = $('#petsRow');
-      var petTemplate = $('#petTemplate');
+    var petsRow = $('#petsRow');
+    var petTemplate = $('#petTemplate');
 
-      for (i = 0; i < data.length; i ++) {
-        petTemplate.find('.panel-title').text(data[i].name);
-        petTemplate.find('img').attr('src', data[i].picture);
-        petTemplate.find('.pet-breed').text(data[i].breed);
-        petTemplate.find('.pet-age').text(data[i].age);
-        petTemplate.find('.pet-location').text(data[i].location);
-        petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
+    for (i = 1; i <= 20; i ++) {
+      petTemplate.find('.problem-no').text(i);
+      petTemplate.find('.problem-ans').text("not solved");
+      petTemplate.find('.btn-submit').attr('ans-id', i)
 
-        petsRow.append(petTemplate.html());
-      }
-    });
+      petsRow.append(petTemplate.html());
+    };
 
     return App.initWeb3();
   },
@@ -54,8 +50,20 @@ App = {
 
       // Set the provider for our contract
       App.contracts.EulerCoin.setProvider(App.web3Provider);
-      console.log("been here");
+
+      for (j = 1; j <= 20; j ++) {
+        (function(ii){
+          App.contracts.EulerCoin.deployed().then(function(instance){
+            return instance.getAnswer.call(ii);
+          }).then(function(answer) {
+            App.map_answers[ii]=answer.toNumber();
+            //console.log(App.map_answers)
+            App.displayResults();
+          })
+        })(j);
+      }
       return App.displayResults();
+
     });
 
     return App.bindEvents();
@@ -68,10 +76,8 @@ App = {
 
   markAdopted: function(adopters, account) {
     var adoptionInstance;
-
     App.contracts.Adoption.deployed().then(function(instance) {
       adoptionInstance = instance;
-
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters) {
       for (i = 0; i < adopters.length; i++) {
@@ -84,30 +90,23 @@ App = {
     });
   },
 
-
   /* display answers  not complete  */
-  displayResults:function(allAnswers) {
-    var EulerInstance;
-
-    App.contracts.Adoption.deployed().then(function(instance) {
-      EulerInstance = instance;
-
-      return EulerInstance.getAnswers.call();
-    }).then(function(allAnswers) {
-      for (i = 0; i < allAnswers.length; i++) {
-        /* haven't finish this part  */
-        if (allAnswers[i] !== '0x0000000000000000000000000000000000000000') {
-          $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
-        }
+  displayResults:function() {
+    for (i = 1; i <= 20; i++) {
+      /* haven't finish this part  */
+      if (App.map_answers[i]) {
+        console.log(i);
+        console.log(App.map_answers[i]);
+        console.log(App.map_answers);
+        $('.panel-body').eq(i-1).find('button').text('solved!').attr('disabled', true);
+        $('.problem-ans').eq(i-1).text(App.map_answers[i]);
       }
-    }).catch(function(err) {
-      console.log(err.message);
-    });
+    }
   },
 
   handleAdopt: function() {
     event.preventDefault();
-    var petId = parseInt($(event.target).data('id'));
+    var petId = parseInt($(event.target).data('ans-id'));
     var adoptionInstance;
     web3.eth.getAccounts(function(error, accounts){
       if (error) {
@@ -127,9 +126,10 @@ App = {
   },
 
   handleSubmit: function(){
-    console.log("did submit");
+    var petId = parseInt($(event.target).attr('ans-id'));
+
     var answer = window.prompt("your answer");
-    console.log( answer);
+    //console.log(petId,answer);
 
     web3.eth.getAccounts(function(error, accounts){
       if (error) {
@@ -139,7 +139,7 @@ App = {
       App.contracts.EulerCoin.deployed().then(function(instance) {
         EulerInstance = instance;
         // Execute adopt as a transaction by sending account
-        return EulerInstance.SubmitAnswer(answer, {from: account});
+        return EulerInstance.submitAnswer(petId, answer, {from: account});
       }).catch(function(err) {
         console.log(err.message);
       });
