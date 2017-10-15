@@ -1,6 +1,14 @@
 # ETHWaterloo
 
-This currently contains the starter code here: http://truffleframework.com/boxes/pet-shop
+![](https://i.imgur.com/189Bubg.png)
+
+We often hear the media describing Bitcoin as "computers solving hard math problems for money". Well, EulerCoin lets you solve Project Euler problems to generate digital currency tokens!
+
+Project Euler is a well-known site for mathematical and programming problems. You submit your answer to a Project Euler problem to our smart contract, which submits it to Project Euler. If it's correct, then you are awarded some EulerCoin and the answer is published to the blockchain for everyone to enjoy!
+
+![](https://i.imgur.com/FWKkWUq.png)
+
+This project was built using Ethereum, Solidity, and Truffle.
 
 ## To build it
 
@@ -11,7 +19,7 @@ This currently contains the starter code here: http://truffleframework.com/boxes
 5. `truffle test`
 6. `npm install`
 7. `npm run dev`
-8. Go to localhost:3000. You should see dogs.
+8. Go to localhost:3000.
 
 
 Happy Hacking!
