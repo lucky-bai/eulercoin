@@ -1,6 +1,8 @@
-# ETHWaterloo
+# EulerCoin
 
 ![](https://i.imgur.com/189Bubg.png)
+
+Read this [blog post](https://luckytoilet.wordpress.com/2017/10/15/eulercoin-earn-digital-tokens-by-solving-difficult-mathematical-project-euler-problems/) for more details!
 
 We often hear the media describing Bitcoin as "computers solving hard math problems for money". Well, EulerCoin lets you solve Project Euler problems to generate digital currency tokens!
 
